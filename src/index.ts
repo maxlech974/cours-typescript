@@ -1,67 +1,83 @@
-abstract class Engine {
-  constructor(private type: string) {
 
-  }
+interface User {
+  readonly username: string;
+  age: number;
+  isDrinking?: boolean;
+  isHealthy?: boolean;
+  isSmoking?: boolean;
+  [propName: number]: any;
+  [propName: string]: any;
+}
+
+interface CollectionUser {
+  [x: string]: User;
+}
+
+
+const ids: readonly string[] = ['1', '2', '3'];
+
+const user: User = {
+  username: 'John',
+  age: 30,
+  isDrinking: true,
+  isSmoking: true,
+  isHealthy: false
+}
+
+
+const newUser: User = {
+  username: 'John',
+  age: 30,
+  0: true,
+  1: false,
+  isOnline: true
+}
  
-  abstract stopEngine(): void;
-}
-
-class Vehicule extends Engine {
-  wheel= 4;
-  protected brand: string;
-
-  constructor(brand: string) {
-    super('V8');
-    this.brand = brand;
-  }
+function greet (user: { username: string}): void {
+  console.log(`Hello ${user.username}!`);
 }
 
 
-class Voiture extends Vehicule {
-  static className = "Véhicule";
-  private maxSpeed: number = 100;
-  readonly airbag: boolean = true;
 
-  static startCar() {
-    console.log('car start')
-  }
+function death (user: User) {}
 
-  faster(newSpeed: number): void {
-    if(newSpeed <= this.maxSpeed) {
-      this.speed = newSpeed;
-    }
-  }
-  move() {
-    console.log('car move')
-  }
+function goodShape (user: User) {}
 
-  stop() {
-    console.log('car stop')
-  }
+greet(user);
 
-  changeBrand(newBrand: string): void {
-    this.brand = newBrand;
-  }
+let func: (param: string) => number;
 
-
-  constructor (public speed: number, brand: string) {
-    super(brand);
-    this.speed = speed;
-  }
-
-  stopEngine(): void {
-    console.log('stop engine')
-  }
+interface MyFunc {
+  (param: string): number;
 }
 
-let car: Voiture;
+const func2: MyFunc = (x: string) => {
+  return 0;
+}
 
-car = new Voiture(300, 'BMW');
-// car.changeBrand('Peugeot');
-console.log(car);
-console.log(Voiture.className);
-console.log(Voiture.startCar());
+interface Vehicule {
+  name: string;
+  drive: () => void;
+}
 
+interface Engine {
+  type: string
+}
 
+// interface Car extends Vehicule, Engine {
+//   wheels: number;
 
-console.log(car.wheel);
+// }
+
+class Car implements Vehicule, Engine {
+  drive() {}
+  constructor(public name: string, public type: string, public wheels: number) {}
+
+}
+
+const newCar: Car = {
+  name: 'Zoe',
+  wheels: 4,
+  type: 'electric',
+  drive: () => {}
+}
