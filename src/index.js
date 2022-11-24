@@ -1,13 +1,46 @@
-var user = {
-    username: 'John',
-    age: 30,
-    isDrinking: true,
-    isSmoking: true,
-    isHealthy: false
-};
-function greet(user) {
-    console.log("Hello ".concat(user.username, "!"));
+var _a;
+function isBird(x) {
+    return x.fly !== undefined;
 }
-function death(user) { }
-function goodShape(user) { }
-greet(user);
+function move(animal) {
+    if (isBird(animal)) {
+        animal.fly();
+    }
+    else {
+        animal.swim();
+    }
+}
+// function move(animal: Bird | Whale) {
+//   if('fly' in animal) {
+//     animal.fly();
+//   } else {
+//     animal.swim();
+//   }
+// }
+function foo(a) {
+    if (typeof a === 'string') {
+        a;
+    }
+}
+class A {
+    getA() { }
+}
+class B {
+    getB() { }
+}
+const a = new A();
+const b = new B();
+function bar(a) {
+    if (a instanceof A) {
+        a.getA();
+    }
+    else {
+        a.getB();
+    }
+}
+const myUser = {
+    username: 'John',
+    age: 20,
+};
+const city = (_a = myUser.address) === null || _a === void 0 ? void 0 : _a.city;
+console.log(city);
