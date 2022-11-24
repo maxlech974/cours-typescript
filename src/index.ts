@@ -1,137 +1,169 @@
-interface Bird {
-  fly: () => void;
+const arr: Array<string> = ['pomme', 'fraise', 'tomate'];
+
+const fruit = arr[0];
+
+interface User  {
+  username: string;
 }
 
-interface Whale {
-  swim: () => void;
+const promise: Promise<User> = new Promise((resolve, reject) => {
+  resolve({
+    username: 'toto',
+  });
+});
+
+promise.then((res) => {
+  
+})
+
+
+interface Car {
+  speed: number;
+}
+
+const newCar: Car = {
+  speed: 50,
+}
+
+interface Fruit {
+  name: string;
+  price: number;
+}
+
+const newFruit: Fruit = {
+  name: 'banane',
+  price: 1,
+}
+
+// function addItemToCollection(item: Fruit, collection: Fruit[]): Fruit[];
+// function addItemToCollection(item: Car, collection: Car[]): Car[];
+// function addItemToCollection (item: object, collection: object[]): object[] {
+//   return [...collection, item];
+// }
+
+// function addItemToCollection<T>(item: T, collection: T[]): T[] {
+//   return [...collection, item];
+// }
+
+interface AddItemFunction {
+  <T>(item: T, collection: T[]): T[];
+}
+const addItemToCollection: AddItemFunction = <T>(item: T, collection: T[]): T[] => {
+  return [...collection, item];
 }
 
 
-function isBird(x: Whale | Bird): x is Bird {
-  return (x as Bird).fly !== undefined;
+const myFruits = addItemToCollection(newFruit, []);
+const myCars = addItemToCollection(newCar, []);
+
+console.log(myFruits[0].price);
+console.log(myCars[0].speed);
+
+class Stack <T> {
+  items: T[] = [];
+  push(item: T): void {
+    this.items.push(item);
+  }
+
+  pop(): T {
+    return this.items.pop();
+  }
+
+  display(): void {
+    console.log(this.items);
+  }
+
 }
 
-function move(animal: Bird | Whale) {
-  if(isBird(animal)) {
-    animal.fly();
-  } else {
-    animal.swim();
+const stackNumber = new Stack<number>();
+stackNumber.push(1);
+stackNumber.display();
+stackNumber.push(2);
+stackNumber.display();
+const myMynumber = stackNumber.pop();
+stackNumber.display();
+
+console.log(myMynumber);
+
+const stackString = new Stack<string>();
+stackString.push('hello');
+stackString.display();
+stackString.push('world');
+stackString.display();
+const myStackString = stackString.pop();
+stackString.display();
+
+console.log(myStackString);
+
+
+interface Name {
+  name: string;
+}
+
+
+function displayName <T extends Name> (object: T): void {
+  console.log(object.name);
+}
+
+function dispalyProp <T, U extends keyof T> (object: T, prop: U): void {
+  console.log(object[prop]);
+}
+
+dispalyProp({price: '50'}, 'price');
+
+// const newUser: Readonly<User> = {
+//   username: 'jean',
+// }
+
+function editUser(user: User, editedUser: Partial<User>) {
+  return {
+    ...user,
+    ...editedUser,
   }
 }
 
-// function move(animal: Bird | Whale) {
-//   if('fly' in animal) {
-//     animal.fly();
-//   } else {
-//     animal.swim();
-//   }
-// }
+// editUser(newUser, { age: 15 });
 
-function foo(a: string | number) {
-  if (typeof a === 'string') {
-    a
-  } 
+interface Page {
+  title: string;
+
 }
 
-class A {
-  getA(){}
-}
-
-class B {
-  getB(){}
-}
-
-// const a = new A();
-// const b = new B();
-
-// function bar(a: A | B) {
-//   if (a instanceof A) {
-//     a.getA();
-//   } else {
-//     a.getB();
-//   }
+// interface Pages {
+//   [pages: string]: Page;
 // }
 
-// interface User {
-//   username: string,
-// }
+type PageType = 'home' | 'about' | 'contact';
 
-// interface Moderator {
-//   deleteMessage: () => void,
-//   editMessage: () => void,
-// }
-
-// interface AddContent {
-//   addMessage: () => void,
-// }
-
-// // interface BasisUser extends User, AddContent {}
-// // interface Admin extends User, Moderator, AddContent {}
-// const newUser: User & AddContent = {
-//   username: 'John',
-//   addMessage: () => {},
-// }
-
-// const admin: User & Moderator & AddContent = {
-//   username: 'John',
-//   deleteMessage: () => {},
-//   editMessage: () => {},
-//   addMessage: () => {},
-// }
+const pages: Record<PageType, Page> = {
+  home: {
+    title: 'homepage'
+  },
+  about: {
+    title: 'abou'
+  },
+  contact: {
+    title: 'contact'
+  },
+};
 
 
-// type customModulos = 1 | 2 | 3;
-
-// type ObjectId = string;
-
-// type User = {
-//   username: string,
-//   age: number,
-//   address?: {
-//     city: string,
-
-//   }
-// }
-
-// const myUser: User = {
-//   username: 'John',
-//   age: 20,
-// }
-
-// const city = myUser.address?.city;
-
-// const username = myUser.username || 'guest';
-
-type UserStatusType = 'online' | 'offline' | 'busy';
-type CustomModulos = 1 | 2 | 3;
-
-
-let userStatus: UserStatusType = 'online';
-
-function getUserStatus(user): UserStatusType {
-  return userStatus;
-}
-
-type ObjectId = string;
-
-
-type User = {
+interface User {
   username: string;
   age: number;
-  id: ObjectId;
+  address: {
+    city: string;
   
+  }
 }
 
-const newUser: User = {
-  username: 'John',
-  age: 20,
-  id: '123',
-}
+// // type LightUser = Pick<User, 'username' | 'age'>;
+type LightUser = Omit<User, 'address'>;
 
-type Alias = { nombre: number };
-interface Interface {
-  nombre: number;
-}
-
-let a: Alias = {nombre: true};
-let b: Interface = {nombre: 2};
+// const newUser: User = {
+//   username: 'jean',
+//   age: 12,
+//   address: {
+//     city: 'Paris',
+//   },
+// }
